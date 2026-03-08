@@ -176,27 +176,14 @@ var endDate   = '2022-12-31';
 
 5. Click **Run**
 
-### Cloning This Repository
-
-```bash
-# Clone the repo
-git clone https://github.com/YOUR_USERNAME/remote-sensing-lulc.git
-
-# Navigate into it
-cd remote-sensing-lulc
-```
-
----
-
 ## Results & Accuracy
 
-> *(Update this section with your actual results)*
 
 | Sensor | Year | OA (%) | Kappa |
 |--------|------|--------|-------|
 | Landsat 7 | 2005 | — | — |
 | Landsat 8 | 2020 | — | — |
-| Landsat 9 | 2023 | — | — |
+| Landsat 9 | 2023 | 83.5 | 79.1 |
 | Sentinel-2 | 2023 | — | — |
 
 Sample outputs and confusion matrices are available in the [`docs/accuracy_reports/`](./docs/accuracy_reports/) folder.
@@ -214,17 +201,6 @@ Sample outputs and confusion matrices are available in the [`docs/accuracy_repor
 ```bash
 pip install earthengine-api geemap numpy pandas matplotlib
 ```
-
----
-
-## Contributing
-
-This is primarily an academic portfolio project, but suggestions and improvements are welcome.
-
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add: description'`)
-4. Push and open a Pull Request
 
 ---
 
