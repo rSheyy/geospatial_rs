@@ -230,17 +230,13 @@ This is primarily an academic portfolio project, but suggestions and improvement
 
 ## About
 
-**Author:** [Your Name]  
+**Author:** [Harshidha M]  
 **Program:** M.Tech Geoinformatics  
-**Institution:** [Your University Name]  
-**Contact:** [your.email@example.com]  
+**Institution:** [National Institute of Technology, Warangal]  
+**Contact:** [hm25cem5r04@student.nitw.ac.in]  
 **LinkedIn:** [linkedin.com/in/yourprofile](https://linkedin.com)  
 **GEE Portfolio:** [code.earthengine.google.com](https://code.earthengine.google.com/)
 
 ---
 
-> 📌 *This repository is part of my academic work and personal learning in geospatial analysis, remote sensing, and land cover mapping. If you use any part of this code for your own research, a citation or acknowledgement would be appreciated.*
-
----
-
-**⭐ If this helped you, consider giving the repo a star!**
+> 📌 *This repository is part of my academic work and personal learning in geospatial analysis, remote sensing, and land cover mapping.* 
