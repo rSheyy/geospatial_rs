@@ -184,3 +184,168 @@ Accuracy Assessment
         ↓
 LULC Map Export
 ```
+
+
+---
+
+# Spectral Reflectance Curve Analysis
+
+## Overview
+
+This section analyzes the **spectral reflectance characteristics of different land cover classes** in Coimbatore using Landsat-9 satellite imagery.
+Spectral signatures help understand how various surfaces reflect electromagnetic radiation across different wavelengths.
+
+Each land cover type exhibits a **unique spectral response**, which is useful for remote sensing classification and environmental monitoring.
+
+---
+
+## Purpose of the Analysis
+
+The spectral reflectance curve helps to:
+
+* Understand spectral behavior of different land cover types
+* Identify distinguishing wavelength patterns
+* Support supervised classification methods such as SVM
+* Validate training samples used in LULC classification
+
+---
+
+## Dataset
+
+Satellite data used in this analysis:
+
+Satellite: Landsat 9
+Collection: `LANDSAT/LC09/C02/T1_L2`
+
+Time Period:
+
+1 January 2024 – 31 December 2024
+
+Spatial Resolution:
+
+30 meters
+
+Study Area:
+
+Coimbatore, Tamil Nadu, India
+
+---
+
+## Land Cover Classes Analyzed
+
+Five land cover classes were analyzed for spectral behavior.
+
+| Land Cover Type | Description                                   |
+| --------------- | --------------------------------------------- |
+| Vegetation      | Forests, plantations, and natural green cover |
+| Water           | Rivers, lakes, and reservoirs                 |
+| Cropland        | Agricultural fields                           |
+| Barren Land     | Exposed soil or rocky surfaces                |
+| Built-up Area   | Urban settlements and infrastructure          |
+
+Training polygons representing these classes were used to extract mean reflectance values.
+
+---
+
+## Spectral Bands Used
+
+The spectral curves were generated using Landsat-9 surface reflectance bands.
+
+| Band  | Wavelength Region    |
+| ----- | -------------------- |
+| SR_B1 | Coastal / Aerosol    |
+| SR_B2 | Blue                 |
+| SR_B3 | Green                |
+| SR_B4 | Red                  |
+| SR_B5 | Near Infrared (NIR)  |
+| SR_B6 | Shortwave Infrared 1 |
+| SR_B7 | Shortwave Infrared 2 |
+
+---
+
+## Methodology
+
+### 1. Satellite Image Preparation
+
+Landsat-9 imagery was filtered based on:
+
+* Study area boundary
+* Date range
+* Cloud cover threshold (<10%)
+
+A **mean composite image** was generated to represent the study area.
+
+---
+
+### 2. Land Cover Feature Collection
+
+Training polygons representing each land cover class were defined and merged into a **FeatureCollection**.
+
+These polygons represent sample areas used for spectral analysis.
+
+---
+
+### 3. Spectral Reflectance Extraction
+
+Mean reflectance values were calculated for each band using:
+
+`ui.Chart.image.regions()`
+
+This function extracts **average reflectance values for each class across spectral bands**.
+
+---
+
+### 4. Spectral Curve Generation
+
+The resulting chart displays:
+
+* Reflectance values on the **Y-axis**
+* Spectral bands on the **X-axis**
+* Separate curves for each land cover class
+
+This allows comparison of spectral behavior across land cover types.
+
+---
+
+## Output
+
+The script generates a **spectral reflectance curve chart** showing how each land cover type responds across different wavelengths.
+
+
+
+These curves are important for:
+
+* Identifying spectral separability
+* Improving classification accuracy
+* Understanding surface characteristics
+
+---
+
+## Applications
+
+Spectral signature analysis is useful for:
+
+* Remote sensing classification
+* Vegetation monitoring
+* Water body detection
+* Soil and barren land analysis
+* Urban surface identification
+
+---
+
+## Workflow Summary
+
+```
+Landsat-9 Image Collection
+        ↓
+Cloud Filtering
+        ↓
+Band Selection
+        ↓
+Land Cover Feature Collection
+        ↓
+Mean Reflectance Extraction
+        ↓
+Spectral Signature Chart Generation
+```
+
