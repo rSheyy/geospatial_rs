@@ -1,7 +1,3 @@
-Here is a **clean README** you can place inside your **L8 folder** for your Landsat cloud masking script. It explains the workflow clearly for a geospatial project hosted on GitHub.
-
----
-
 # Landsat-8 Cloud Masking – Coimbatore
 
 ## Overview
