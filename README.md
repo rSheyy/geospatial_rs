@@ -1,202 +1,207 @@
-# 🛰️ Land Use Land Cover (LULC) Classification using Multi-Sensor Remote Sensing
+# 🛰️ Remote Sensing Analysis using Google Earth Engine
 
 [![Platform](https://img.shields.io/badge/Platform-Google%20Earth%20Engine-4285F4?logo=google&logoColor=white)](https://earthengine.google.com/)
 [![Sensors](https://img.shields.io/badge/Sensors-Landsat%207%20%7C%208%20%7C%209%20%7C%20Sentinel--2-green)](https://www.usgs.gov/landsat-missions)
 [![Language](https://img.shields.io/badge/Language-JavaScript%20%7C%20Python-yellow)](https://developers.google.com/earth-engine/guides/getstarted)
-[![Status](https://img.shields.io/badge/Status-Active-brightgreen)](https://github.com/)
-[![MTech](https://img.shields.io/badge/Academic-MTech%20Geoinformatics-orange)](https://github.com/)
+[![Status](https://img.shields.io/badge/Status-Academic%20Project-brightgreen)](https://github.com/)
+[![Program](https://img.shields.io/badge/Program-MTech%20Geoinformatics-orange)](https://github.com/)
 
-> Multi-temporal, multi-sensor LULC classification workflows developed in Google Earth Engine (GEE) using Landsat 7 ETM+, Landsat 8 OLI/TIRS, Landsat 9 OLI-2/TIRS-2, and Sentinel-2 MSI imagery. This repository documents classification pipelines, preprocessing steps, and accuracy assessments for land cover mapping.
+This repository contains **remote sensing workflows developed using Google Earth Engine (GEE)** for analyzing satellite imagery from multiple Earth observation missions.  
+The scripts demonstrate **satellite data preprocessing, vegetation analysis, and land use/land cover (LULC) classification**.
 
----
-
-## 📌 Table of Contents
-
-- [Overview](#overview)
-- [Sensors & Data Sources](#sensors--data-sources)
-- [Repository Structure](#repository-structure)
-- [Methodology](#methodology)
-- [Classification Algorithms Used](#classification-algorithms-used)
-- [LULC Classes](#lulc-classes)
-- [How to Use](#how-to-use)
-- [Results & Accuracy](#results--accuracy)
-- [Requirements](#requirements)
-- [Contributing](#contributing)
-- [About](#about)
+The study area used in the workflows is **Coimbatore, Tamil Nadu, India**.
 
 ---
 
-## Overview
+# 📌 Table of Contents
 
-This repository contains remote sensing scripts and workflows for **Land Use Land Cover (LULC) classification** across multiple satellite platforms. The work explores:
-
-- Comparative analysis of classification accuracy across different sensors
-- Multi-temporal change detection
-- Supervised and unsupervised classification techniques using cloud-based GEE infrastructure
-- Spectral band analysis and index computation (NDVI, NDWI, MNDWI, NDBI, etc.)
-
-All scripts are implemented in **Google Earth Engine JavaScript API**, with some supplementary analysis in Python.
-
----
-
-## Sensors & Data Sources
-
-| Sensor | Satellite | Resolution | Bands Used | Archive |
-|--------|-----------|------------|------------|---------|
-| ETM+ | Landsat 7 | 30m (15m pan) | B1–B7 | 1999–present |
-| OLI/TIRS | Landsat 8 | 30m (15m pan) | B2–B7, B10 | 2013–present |
-| OLI-2/TIRS-2 | Landsat 9 | 30m (15m pan) | B2–B7, B10 | 2021–present |
-| MSI | Sentinel-2 | 10m/20m | B2–B8A, B11, B12 | 2015–present |
-
-All data accessed via **Google Earth Engine Data Catalog** — no local downloads required.
+- Overview
+- Sensors & Data Sources
+- Repository Structure
+- Methodology
+- LULC Classification
+- Example Outputs
+- Tools & Technologies
+- Requirements
+- Author
 
 ---
 
-## Repository Structure
+# Overview
+
+This repository documents **practical remote sensing analysis workflows implemented in Google Earth Engine** using multiple satellite datasets.
+
+The work focuses on:
+
+- Satellite image preprocessing
+- Cloud masking of optical imagery
+- Vegetation analysis using NDVI
+- Land Use Land Cover (LULC) classification
+- Change detection using multi-temporal imagery
+
+The scripts are written primarily in **Google Earth Engine JavaScript API**, with optional Python-based analysis.
+
+---
+
+# Sensors & Data Sources
+
+| Sensor | Satellite | Spatial Resolution | Purpose |
+|------|------|------|------|
+| ETM+ | Landsat 7 | 30 m (15 m pan) | LULC classification and change detection |
+| OLI/TIRS | Landsat 8 | 30 m | Cloud masking and preprocessing |
+| OLI-2/TIRS-2 | Landsat 9 | 30 m | LULC classification (2023–2024) |
+| MSI | Sentinel-2 | 10 m / 20 m | NDVI vegetation analysis |
+
+All imagery was accessed through the **Google Earth Engine Data Catalog**.
+
+---
+
+# Repository Structure
 
 ```
-remote-sensing-lulc/
+remote-sensing-analysis/
 │
-├── README.md
-│
-├── GEE/                              # Google Earth Engine Scripts (JavaScript)
+├── GEE/
+│   │
 │   ├── Landsat7/
-│   │   ├── preprocessing.js          # Cloud masking, SR correction
-│   │   ├── classification.js         # Supervised classification
-│   │   └── index_computation.js      # NDVI, NDWI etc.
+│   │   └── ChangeDetection_Cbe.js
 │   │
 │   ├── Landsat8/
-│   │   ├── preprocessing.js
-│   │   ├── classification.js
-│   │   └── change_detection.js
+│   │   └── CloudMasking_Cbe.js
 │   │
 │   ├── Landsat9/
-│   │   ├── preprocessing.js
-│   │   └── classification.js
+│   │   └── LULC_Classification_Cbe_2023_2024.js
 │   │
 │   └── Sentinel2/
-│       ├── preprocessing.js          # SCL cloud masking
-│       ├── classification.js
-│       └── composite_generation.js
+│       └── NDVI_Analysis_Cbe.js
 │
-├── Python/                           # Python-based analysis (if any)
-│   ├── accuracy_assessment.py
-│   └── visualization.py
-│
-├── docs/
-│   ├── methodology.md                # Detailed methodology notes
-│   ├── accuracy_reports/             # Confusion matrices, Kappa values
-│   └── sample_outputs/               # Exported map screenshots
-│
+├── README.md
 └── LICENSE
 ```
 
 ---
 
-## Methodology
+# Methodology
 
-### 1. Data Acquisition & Filtering
-- Filter image collections by date range, area of interest (AOI), and cloud cover threshold
-- Select best available imagery for the target season/period
+## 1. Data Filtering
 
-### 2. Preprocessing
-- **Landsat 7/8/9**: Apply `USGS Landsat Surface Reflectance` product + `QA_PIXEL` cloud masking
-- **Sentinel-2**: Use `Scene Classification Layer (SCL)` for cloud/shadow masking; apply `s2cloudless` where needed
-- Generate seasonal or annual median/mean composites
+Satellite image collections were filtered using:
 
-### 3. Feature Engineering
-Key spectral indices computed:
+- Area of Interest (Coimbatore region)
+- Date range selection
+- Cloud cover threshold
 
-| Index | Formula | Purpose |
-|-------|---------|---------|
-| NDVI | (NIR - Red) / (NIR + Red) | Vegetation density |
-| NDWI | (Green - NIR) / (Green + NIR) | Water bodies |
-| MNDWI | (Green - SWIR1) / (Green + SWIR1) | Modified water index |
-| NDBI | (SWIR1 - NIR) / (SWIR1 + NIR) | Built-up areas |
-| EVI | 2.5 × (NIR - Red) / (NIR + 6×Red - 7.5×Blue + 1) | Enhanced vegetation |
-| BSI | ((SWIR1 + Red) - (NIR + Blue)) / ... | Bare soil |
+Example:
 
-### 4. Training Sample Collection
-- Digitized training polygons using GEE's geometry tools
-- Minimum 50 samples per class; stratified random sampling where applicable
-
-### 5. Classification
-- Algorithms: Random Forest, CART, SVM, K-Means (unsupervised)
-- Feature stack: spectral bands + indices + texture (optional GLCM)
-
-### 6. Accuracy Assessment
-- 70/30 or 80/20 train/test split
-- Metrics: **Overall Accuracy**, **Kappa Coefficient**, **Producer's & User's Accuracy**
-- Confusion matrix exported and documented
-
----
-
-## Classification Algorithms Used
-
-- **Random Forest (RF)** — primary classifier; 100–500 trees
-- **CART** — fast baseline classifier
-- **Support Vector Machine (SVM)** — kernel-based, used for Sentinel-2 high-res data
-- **K-Means** — unsupervised, for exploratory classification
-- **Minimum Distance / Maximum Likelihood** — traditional comparative benchmarks
-
----
-
-## LULC Classes
-
-> *(Adapt based on your study area — example below)*
-
-| Class No. | Class Name | Description |
-|-----------|------------|-------------|
-| 1 | Water Bodies | Rivers, lakes, reservoirs |
-| 2 | Dense Vegetation | Forest, dense tree cover |
-| 3 | Agricultural Land | Croplands, fallow fields |
-| 4 | Built-up Area | Urban, peri-urban structures |
-| 5 | Barren Land | Exposed soil, rocky surfaces |
-| 6 | Wetlands | Marshy/waterlogged areas |
-
----
-
-## How to Use
-
-### Running GEE Scripts
-
-1. Open [Google Earth Engine Code Editor](https://code.earthengine.google.com/)
-2. Create a new script or open an existing one
-3. Copy-paste the contents of any `.js` file from this repo
-4. Update the following variables to match your study area:
-
-```javascript
-// Update your Area of Interest
-var aoi = ee.FeatureCollection('users/YOUR_USERNAME/your_shapefile');
-
-// Update date range
-var startDate = '2022-01-01';
-var endDate   = '2022-12-31';
+```
+var dataset = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+              .filterBounds(aoi)
+              .filterDate('2023-01-01','2024-01-01')
+              .filterMetadata('CLOUD_COVER','less_than',10);
 ```
 
-5. Click **Run**
+---
 
-## Results & Accuracy
+## 2. Preprocessing
 
+### Landsat-8 Cloud Masking
 
-| Sensor | Year | OA (%) | Kappa |
-|--------|------|--------|-------|
-| Landsat 7 | 2005 | — | — |
-| Landsat 8 | 2020 | — | — |
-| Landsat 9 | 2023 | 83.5 | 79.1 |
-| Sentinel-2 | 2023 | — | — |
+Cloud and cloud shadow pixels were removed using the **QA_PIXEL band**.
 
-Sample outputs and confusion matrices are available in the [`docs/accuracy_reports/`](./docs/accuracy_reports/) folder.
+Steps:
+
+- Extract QA band
+- Identify cloud pixels
+- Mask unwanted pixels
+- Generate clean imagery for analysis
 
 ---
 
-## Requirements
+### Sentinel-2 Preprocessing
 
-- **Google Earth Engine Account** (free for research/academic use) → [Sign up here](https://earthengine.google.com/signup/)
-- **Google Earth Engine JavaScript API** (no installation needed — runs in browser)
-- Optional for Python scripts:
-  - Python 3.8+
-  - `earthengine-api`, `geemap`, `numpy`, `pandas`, `matplotlib`
+Sentinel-2 imagery was used to compute vegetation indices such as **NDVI**.
+
+---
+
+## 3. Vegetation Analysis
+
+NDVI was computed using Sentinel-2 spectral bands:
+
+```
+NDVI = (NIR - Red) / (NIR + Red)
+```
+
+Where:
+
+| Band | Description |
+|----|----|
+| NIR | Near Infrared Band |
+| Red | Red Band |
+
+NDVI helps identify vegetation health and density across the study area.
+
+---
+
+## 4. LULC Classification
+
+Supervised classification was implemented using **Support Vector Machine (SVM)**.
+
+Training samples were collected from representative land cover types.
+
+Typical classes used in the classification include:
+
+| Class | Description |
+|------|------|
+| Water Bodies | Rivers, lakes and reservoirs |
+| Vegetation | Forest and dense vegetation |
+| Agricultural Land | Crop fields and plantations |
+| Built-up | Urban areas and infrastructure |
+| Barren Land | Exposed soil and rocky terrain |
+
+---
+
+# Example Outputs
+
+Outputs generated from the scripts include:
+
+- NDVI vegetation maps
+- Cloud-masked Landsat imagery
+- LULC classification maps
+- Land cover change maps for Coimbatore region
+
+Example visual outputs may include:
+
+- NDVI distribution maps
+- Classified LULC maps
+- Satellite imagery composites
+
+---
+
+# Tools & Technologies
+
+The following tools were used in the workflows:
+
+- Google Earth Engine (GEE)
+- JavaScript API
+- Satellite imagery from Landsat and Sentinel missions
+- Python (optional analysis)
+
+---
+
+# Requirements
+
+To run the scripts:
+
+1. Create a **Google Earth Engine account**  
+   https://earthengine.google.com/signup/
+
+2. Use the **Google Earth Engine Code Editor**
+
+https://code.earthengine.google.com/
+
+3. Copy any `.js` script from this repository and run it inside the editor.
+
+Optional Python packages:
 
 ```bash
 pip install earthengine-api geemap numpy pandas matplotlib
@@ -204,15 +209,14 @@ pip install earthengine-api geemap numpy pandas matplotlib
 
 ---
 
-## About
+# Author
 
-**Author:** [Harshidha M]  
-**Program:** M.Tech Geoinformatics  
-**Institution:** [National Institute of Technology, Warangal]  
-**Contact:** [hm25cem5r04@student.nitw.ac.in]  
-**LinkedIn:** [linkedin.com/in/yourprofile](https://linkedin.com)  
-**GEE Portfolio:** [code.earthengine.google.com](https://code.earthengine.google.com/)
+**Harshidha M**  
+M.Tech Geoinformatics  
+National Institute of Technology Warangal  
+
+Email: hm25cem5r04@student.nitw.ac.in  
 
 ---
 
-> 📌 *This repository is part of my academic work and personal learning in geospatial analysis, remote sensing, and land cover mapping.* 
+This repository contains **academic exercises and experiments in remote sensing and geospatial analysis using satellite imagery.**
